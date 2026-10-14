@@ -120,3 +120,17 @@ Gõ lệnh:
 - `description`: Mô tả nội dung tài liệu (tùy chọn).
 - `log_channel`: Chọn kênh riêng nhận log tải tài liệu này (tùy chọn, mặc định lấy trong `.env`).
 - `required_role`: Chỉ định vai trò bắt buộc mới được phép tải (tùy chọn).
+
+### 3. Điều khiển Bot gửi tin nhắn văn bản (/say)
+Gõ lệnh:
+```text
+/say message: "Nội dung cần gửi" channel: #kênh-nhận
+```
+Bot sẽ gửi tin nhắn thuần túy thay mặt bạn (dùng avatar và tên của Bot).
+
+### 4. Điều khiển Bot gửi thông báo trang trọng (/announce)
+Gõ lệnh:
+```text
+/announce title: "Tiêu đề" message: "Nội dung" channel: #kênh-nhận color: "Xanh dương/Đỏ/Xanh lá..." mention: "everyone/here/none"
+```
+Bot sẽ gửi khung thông báo Embed viền màu sang trọng vào kênh chỉ định.

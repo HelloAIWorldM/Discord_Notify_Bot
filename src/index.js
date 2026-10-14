@@ -16,8 +16,10 @@ const { getAllAvailablePdfs } = require('./services/fileScanner');
 // Các lệnh Slash Command
 const publishDocCmd = require('./commands/publishDoc');
 const listDocsCmd = require('./commands/listDocs');
+const sayCmd = require('./commands/say');
+const announceCmd = require('./commands/announce');
 
-const commands = [publishDocCmd, listDocsCmd];
+const commands = [publishDocCmd, listDocsCmd, sayCmd, announceCmd];
 
 // Khởi tạo Client Discord (chỉ cần GatewayIntentBits.Guilds là đủ cho Slash Commands và Buttons)
 const client = new Client({
