@@ -28,38 +28,36 @@ const client = new Client({
   ]
 });
 
-// Đăng ký Slash Commands với Discord API
-// Hàm đăng ký Slash Commands cho một máy chủ cụ thể
-async function registerCommandsForGuild(guildId) {
-  const rest = new REST({ version: '10' }).setToken(config.token);
-  const commandData = commands.map(c => c.data.toJSON());
-  await rest.put(
-    Routes.applicationGuildCommands(config.clientId, guildId),
-    { body: commandData }
-  );
-}
-
-// Đăng ký Slash Commands với Discord API cho tất cả các máy chủ
+// Đăng ký Slash Commands toàn cầu (Global Commands) duy nhất, xóa sạch lệnh trùng ở cấp Guild
 async function registerCommands() {
   if (!config.token || !config.clientId) return;
 
   const rest = new REST({ version: '10' }).setToken(config.token);
   try {
-    console.log('[BOT] Đang đồng bộ Slash Commands cho tất cả các máy chủ...');
+    console.log('[BOT] Đang đồng bộ Slash Commands toàn cầu...');
     const commandData = commands.map(c => c.data.toJSON());
-    
-    // 1. Đăng ký toàn cầu (Global commands)
+
+    // 1. Đăng ký duy nhất 1 bộ lệnh toàn cầu (Global commands)
     await rest.put(
       Routes.applicationCommands(config.clientId),
       { body: commandData }
     );
 
-    // 2. Đăng ký trực tiếp cho từng server bot đang có mặt để có lệnh ngay lập tức
+    // 2. Xóa sạch các lệnh ở cấp Guild cũ để triệt tiêu hoàn toàn tình trạng trùng 2 lệnh
     for (const guild of client.guilds.cache.values()) {
-      await registerCommandsForGuild(guild.id).catch(() => {});
+      await rest.put(
+        Routes.applicationGuildCommands(config.clientId, guild.id),
+        { body: [] }
+      ).catch(() => {});
+    }
+    if (config.guildId) {
+      await rest.put(
+        Routes.applicationGuildCommands(config.clientId, config.guildId),
+        { body: [] }
+      ).catch(() => {});
     }
 
-    console.log('✅ Đã đồng bộ Slash Commands thành công cho toàn bộ các máy chủ!');
+    console.log('✅ Đã đồng bộ Slash Commands toàn cầu và dọn sạch các lệnh trùng lặp!');
   } catch (err) {
     console.error('❌ Lỗi khi đăng ký Slash Commands:', err.message);
   }
@@ -73,17 +71,6 @@ client.once(Events.ClientReady, async () => {
   console.log(`==============================================\n`);
 
   await registerCommands();
-});
-
-// Khi Bot được mời vào máy chủ mới, tự động đăng ký lệnh ngay lập tức
-client.on(Events.GuildCreate, async guild => {
-  console.log(`[BOT] Vừa được mời vào máy chủ mới: ${guild.name} (${guild.id})`);
-  try {
-    await registerCommandsForGuild(guild.id);
-    console.log(`✅ Đã kích hoạt lệnh thành công cho máy chủ: ${guild.name}`);
-  } catch (e) {
-    console.error(`Lỗi khi kích hoạt lệnh cho ${guild.name}:`, e.message);
-  }
 });
 
 // Xử lý tương tác (Slash Commands & Nút bấm tải tài liệu)
