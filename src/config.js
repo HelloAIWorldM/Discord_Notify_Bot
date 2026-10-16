@@ -17,6 +17,10 @@ const config = {
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
 
+  // Cấu hình Chế độ ngủ (Sleep Mode: Ẩn khi không có ai dùng, tự bật Online khi có tương tác)
+  sleepMode: process.env.SLEEP_MODE !== 'false', // Mặc định bật true
+  sleepTimeoutMinutes: parseInt(process.env.SLEEP_TIMEOUT_MINUTES || '2', 10),
+
   // Đường dẫn thư mục lưu trữ
   paths: {
     rawDocs: path.join(__dirname, '../storage/raw_docs'),
