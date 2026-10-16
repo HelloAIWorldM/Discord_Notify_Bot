@@ -17,9 +17,6 @@ const config = {
   ownerId: process.env.OWNER_ID || '490681384684355604',
 
 
-  // Cấu hình Chế độ ngủ (Sleep Mode: Ẩn khi không có ai dùng, tự bật Online khi có tương tác)
-  sleepMode: process.env.SLEEP_MODE !== 'false', // Mặc định bật true
-  sleepTimeoutMinutes: parseInt(process.env.SLEEP_TIMEOUT_MINUTES || '2', 10),
 
   // Đường dẫn thư mục lưu trữ
   paths: {

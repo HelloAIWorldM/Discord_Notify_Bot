@@ -64,49 +64,15 @@ async function registerCommands() {
   }
 }
 
-// Quản lý Chế độ ngủ thông minh (Sleep Mode)
-let sleepTimer = null;
-
-function wakeUpBot() {
-  if (!config.sleepMode || !client.user) return;
-
-  try {
-    // Đánh thức bot: chuyển trạng thái sang Online (chấm xanh)
-    client.user.setPresence({ status: 'online' });
-
-    // Hủy hẹn giờ ngủ cũ và đặt lại bộ đếm thời gian mới
-    if (sleepTimer) clearTimeout(sleepTimer);
-
-    const timeoutMs = (config.sleepTimeoutMinutes || 2) * 60 * 1000;
-    sleepTimer = setTimeout(() => {
-      try {
-        if (client.user) {
-          client.user.setPresence({ status: 'invisible' });
-          console.log(`🌙 [SLEEP MODE] Hết ${config.sleepTimeoutMinutes} phút không có tương tác, bot đã quay về chế độ ngủ (invisible).`);
-        }
-      } catch (e) {
-        console.error('[SLEEP MODE ERROR]', e.message);
-      }
-    }, timeoutMs);
-  } catch (err) {
-    console.error('[WAKE UP ERROR]', err.message);
-  }
-}
-
 // Xử lý sự kiện khi Bot sẵn sàng
 client.once(Events.ClientReady, async () => {
   console.log(`\n==============================================`);
-  console.log(`🤖 BOT ĐÃ KHỞI ĐỘNG THÀNH CÔNG: ${client.user.tag}`);
+  console.log(`🤖 BOT ĐÃ ONLINE THÀNH CÔNG: ${client.user.tag}`);
   console.log(`🛡️ Niên Du Document Gatekeeper đang bảo vệ server.`);
-
-  if (config.sleepMode) {
-    client.user.setPresence({ status: 'invisible' });
-    console.log(`🌙 [SLEEP MODE BẬT] Bot đang ẩn (invisible), sẽ tự bật Online khi có tương tác (tự ngủ sau ${config.sleepTimeoutMinutes} phút).`);
-  } else {
-    client.user.setPresence({ status: 'online' });
-  }
-
   console.log(`==============================================\n`);
+
+  // Luôn giữ trạng thái Online (chấm xanh) 24/7
+  client.user.setPresence({ status: 'online' });
 
   await registerCommands();
 });
@@ -114,9 +80,6 @@ client.once(Events.ClientReady, async () => {
 // Xử lý tương tác (Slash Commands & Nút bấm tải tài liệu)
 client.on('interactionCreate', async interaction => {
   try {
-    // Đánh thức bot dậy khi có bất kỳ tương tác nào (Slash Command / Button / Autocomplete)
-    wakeUpBot();
-
     // 1. Xử lý gợi ý tự động (Autocomplete)
     if (interaction.isAutocomplete()) {
       if (interaction.commandName === 'publish-doc') {
