@@ -47,7 +47,32 @@ function getFallbackReply(prompt, userName) {
     return `Dạ chào ${userName}, mình không hỗ trợ các câu hỏi về lập trình hay viết code đâu nhé.`;
   }
 
-  // 3. Ngữ cảnh Game / Rủ chơi game (Roblox, LOL, game, chơi không...)
+  // 3. Ngữ cảnh mắng / chửi / bực tức / tiếng lóng tục
+  if (/(chửi|chui|mắng|mang|dumos|dume|duma|đm|dm|đcm|dcm|vcl|clm|vkl|đéo|deo|cút|cut|biến|bien|đồ tồi|do toi|bực|tức)/i.test(lower)) {
+    const scoldReplies = [
+      `Sao ${userName} lại mắng mình thế, mình làm gì sai à?`,
+      `${userName} bớt nóng nào, có chuyện gì khiến ${userName} bực mình thế?`,
+      `Đừng mắng mình mà ${userName}, có gì từ từ nói nhé.`
+    ];
+    return scoldReplies[Math.floor(Math.random() * scoldReplies.length)];
+  }
+
+  // 4. Ngữ cảnh vui vẻ / hài hước
+  if (/(buồn cười|buon cuoi|hài hước|hai huoc|hài quá|haha|hihi|kkk|vui quá|vui thật)/i.test(lower)) {
+    return `Có chuyện gì vui thế ${userName}, kể mình nghe với nào.`;
+  }
+
+  // 5. Ngữ cảnh than vãn / buồn bã / chán nản / mệt mỏi
+  if (/(chán|chan|buồn(?! cười)|buon(?! cuoi)|mệt|met|nản|nan|stress|áp lực|ap luc|cô đơn|co don|tủi thân|tui than|sầu|sau)/i.test(lower)) {
+    const sadReplies = [
+      `Có chuyện gì làm ${userName} buồn chán thế, kể mình nghe xem nào?`,
+      `${userName} nghỉ ngơi nghe nhạc một chút đi, đừng để bản thân mệt mỏi nhé.`,
+      `Nếu ${userName} thấy chán thì vào kênh voice tám chuyện với mọi người trong server nè.`
+    ];
+    return sadReplies[Math.floor(Math.random() * sadReplies.length)];
+  }
+
+  // 6. Ngữ cảnh Game / Rủ chơi game (Roblox, LOL, game, chơi không...)
   if (/(roblox|game|liên quân|lien quan|lol|pubg|genshin|minecraft|valorant|csgo|ff|fifa|bắn súng|chơi|choi)/i.test(lower)) {
     if (/(muốn chơi|muon choi|thích chơi|thich choi|đang chơi|dang choi|đi chơi|di choi)/i.test(lower)) {
       return `Chúc ${userName} chơi game vui vẻ nhé.`;
@@ -58,7 +83,7 @@ function getFallbackReply(prompt, userName) {
     return `Tiếc là mình không tham gia chơi game được rồi ${userName}.`;
   }
 
-  // 4. Ngữ cảnh ăn uống / nghỉ ngơi
+  // 7. Ngữ cảnh ăn uống / nghỉ ngơi
   if (/(ăn cơm|an com|ăn gì|an gi|ăn chưa|an chua|uống nước|uong nuoc|uống trà|trà sữa|đói|khát)/i.test(lower)) {
     return `Mình là bot nên không ăn uống được đâu, ${userName} nhớ ăn uống đầy đủ nhé.`;
   }
@@ -66,17 +91,17 @@ function getFallbackReply(prompt, userName) {
     return `Chúc ${userName} ngủ ngon nhé.`;
   }
 
-  // 5. Ngữ cảnh hỏi thăm sức khỏe / trạng thái bot
+  // 8. Ngữ cảnh hỏi thăm sức khỏe / trạng thái bot
   if (/(khỏe không|khoe khong|ổn không|on khong|dạo này|sao rồi|mệt không|met khong)/i.test(lower)) {
     return `Mình vẫn hoạt động tốt, cảm ơn ${userName} đã hỏi thăm.`;
   }
 
-  // 6. Ngữ cảnh hỏi đang làm gì / rảnh không
+  // 9. Ngữ cảnh hỏi đang làm gì / rảnh không
   if (/(làm gì|lam gi|đang làm|dang lam|rảnh không|ranh khong|bận không|ban khong)/i.test(lower)) {
     return `Mình đang trực server để hỗ trợ ${userName} và mọi người đây.`;
   }
 
-  // 7. Khen ngợi / Chê bai / Trêu đùa
+  // 10. Khen ngợi / Chê bai / Trêu đùa
   if (/(giỏi|gioi|ngoan|đỉnh|dinh|xịn|xin|thông minh|thong minh|pro)/i.test(lower)) {
     return `Cảm ơn ${userName} đã khen nhé.`;
   }
@@ -84,7 +109,7 @@ function getFallbackReply(prompt, userName) {
     return `Mình vẫn đang học hỏi thêm, ${userName} thông cảm nhé.`;
   }
 
-  // 8. Ngữ cảnh tìm kiếm / tài liệu
+  // 11. Ngữ cảnh tìm kiếm / tài liệu
   if (/(tài liệu|tai lieu|pdf|download|tải|nhận sách|file)/i.test(lower)) {
     if (/(lúc trước|luc truoc|gửi đi|gui di|tìm|tim|lấy|lay|đâu|dau)/i.test(lower)) {
       return `${userName} xem lại các bài đăng trong kênh tài liệu hoặc dùng lệnh /list-docs nhé.`;
@@ -92,43 +117,49 @@ function getFallbackReply(prompt, userName) {
     return `Để nhận tài liệu, ${userName} bấm vào nút tải bên dưới bài đăng chia sẻ nhé.`;
   }
 
-  // 9. Ngữ cảnh hỏi danh tính / chức năng bot
+  // 12. Ngữ cảnh hỏi danh tính / chức năng bot
   if (/(bạn là ai|bot là ai|ai đấy|ai day|chức năng|làm được gì|lam duoc gi|giới thiệu|gioi thieu)/i.test(lower)) {
     return `Mình là bot hỗ trợ lưu trữ, dán watermark tài liệu và gửi thông báo trong server.`;
   }
 
-  // 10. Chào hỏi
+  // 13. Chào hỏi
   if (/^(chào|chao|hi|hello|alo|ê|ơi|hey)\b/i.test(lower)) {
     return `Chào ${userName}, ${userName} cần mình hỗ trợ gì không?`;
   }
 
-  // 11. Cảm ơn
+  // 14. Cảm ơn
   if (/(cảm ơn|cam on|thanks|thank you|cmon|tks)/i.test(lower)) {
     return `Không có gì đâu ${userName}.`;
   }
 
-  // 12. Tạm biệt
+  // 15. Tạm biệt
   if (/(tạm biệt|tam biet|bye|bai|bb|hẹn gặp lại)/i.test(lower)) {
     return `Tạm biệt ${userName}, chúc ${userName} một ngày vui vẻ.`;
   }
 
-  // 13. Hỏi có biết làm gì không
+  // 16. Hỏi có biết làm gì không
   if (/(có biết|co biet|biết bơi|biết hát|biết làm)/i.test(lower)) {
     return `Tiếc là việc này mình chưa làm được rồi ${userName}.`;
   }
 
-  // 14. Hỏi là cái gì / gì thế
+  // 17. Hỏi là cái gì / gì thế
   if (/(là gì|la gi|cái gì|cai gi|gì thế|gi the|sao vậy|sao day)/i.test(lower)) {
     return `Câu này mình chưa rõ thông tin rồi ${userName}.`;
   }
 
-  // 15. Câu hỏi Có/Không hoặc Có được không
+  // 18. Câu hỏi Có/Không hoặc Có được không
   if (/(được không|duoc khong|được ko|duoc ko|phải không|phai khong|đúng không|dung khong)/i.test(lower)) {
     return `Việc này mình chưa rõ, ${userName} hỏi Ban Quản Trị xem sao nhé.`;
   }
 
-  // 16. Fallback ngắn gọn tự nhiên (tuyệt đối không viết đoạn văn dài)
-  return `Câu này mình chưa rõ ý, ${userName} nói cụ thể hơn được không?`;
+  // 19. Danh sách fallback ngẫu nhiên đa dạng (tránh lặp đi lặp lại một câu)
+  const randomFallbacks = [
+    `Ý ${userName} là sao nhỉ, mình chưa theo kịp rồi.`,
+    `${userName} nói cụ thể hơn một chút được không, mình chưa rõ lắm.`,
+    `Câu này mình chưa hiểu lắm, ${userName} giải thích thêm cho mình đi.`,
+    `Mình nghe đây ${userName}, nhưng câu vừa rồi mình chưa hiểu rõ ý.`
+  ];
+  return randomFallbacks[Math.floor(Math.random() * randomFallbacks.length)];
 }
 
 // Xử lý tạo câu trả lời khi có người nhắc đến Bot
@@ -157,11 +188,15 @@ async function getAutoReply(userPrompt, author, member) {
 
   // Nếu có cấu hình Google Gemini API Key, sử dụng AI để trả lời tự nhiên theo ngữ cảnh
   if (config.geminiApiKey) {
-    try {
-      const { GoogleGenAI } = require('@google/genai');
-      const ai = new GoogleGenAI({ apiKey: config.geminiApiKey });
+    const modelsToTry = [config.geminiModel, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter(Boolean);
+    const uniqueModels = [...new Set(modelsToTry)];
 
-      const systemInstruction = `
+    for (const modelName of uniqueModels) {
+      try {
+        const { GoogleGenAI } = require('@google/genai');
+        const ai = new GoogleGenAI({ apiKey: config.geminiApiKey });
+
+        const systemInstruction = `
 Bạn là trợ lý ảo hỗ trợ thành viên trong máy chủ Discord.
 Người dùng đang trò chuyện với bạn có tên là: "${userName}".
 
@@ -172,29 +207,28 @@ CÁC NGUYÊN TẮC BẮT BUỘC:
 4. TUYỆT ĐỐI KHÔNG sử dụng bất kỳ biểu tượng cảm xúc (emoji/icon) nào trong câu trả lời (kể cả icon mặt cười, ngôi sao, bàn tay vẫy hay bất kỳ ký tự biểu tượng nào). Toàn bộ nội dung trả lời chỉ sử dụng chữ viết và dấu câu ngữ pháp chuẩn mực.
 `;
 
-      const response = await ai.models.generateContent({
-        model: config.geminiModel || 'gemini-2.5-flash',
-        contents: cleanPrompt,
-        config: {
-          systemInstruction: systemInstruction.trim(),
-          temperature: 0.7,
-          maxOutputTokens: 100
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: cleanPrompt,
+          config: {
+            systemInstruction: systemInstruction.trim(),
+            temperature: 0.7,
+            maxOutputTokens: 100
+          }
+        });
+
+        let replyText = response.text || '';
+        let sanitized = cleanEmojis(replyText);
+
+        // Thay thế dự phòng nếu AI vô tình xưng hô "bạn"
+        sanitized = sanitized.replace(/\bbạn\b/gi, userName);
+
+        if (sanitized) {
+          return sanitized.length > 1900 ? sanitized.substring(0, 1900) + '...' : sanitized;
         }
-      });
-
-      let replyText = response.text || '';
-      let sanitized = cleanEmojis(replyText);
-
-      // Thay thế dự phòng nếu AI vô tình xưng hô "bạn"
-      sanitized = sanitized.replace(/\bbạn\b/gi, userName);
-
-      if (sanitized) {
-        // Giới hạn độ dài an toàn theo chuẩn Discord
-        return sanitized.length > 1900 ? sanitized.substring(0, 1900) + '...' : sanitized;
+      } catch (err) {
+        console.error(`[GEMINI API ERROR với model ${modelName}]:`, err.message);
       }
-    } catch (err) {
-      console.error('[GEMINI API ERROR]', err.message);
-      // Khi AI gặp sự cố, tự động dùng bộ phản hồi dự phòng
     }
   }
 
