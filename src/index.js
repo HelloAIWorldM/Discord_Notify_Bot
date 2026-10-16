@@ -6,7 +6,8 @@ const {
   REST,
   Routes,
   AttachmentBuilder,
-  Events
+  Events,
+  PermissionFlagsBits
 } = require('discord.js');
 const { config, validateConfig } = require('./config');
 const { applyWatermark } = require('./services/watermark');
@@ -134,6 +135,19 @@ client.on('interactionCreate', async interaction => {
 
     // 2. Xử lý Slash Commands
     if (interaction.isChatInputCommand()) {
+      // Kiểm tra quyền hạn:
+      // - Chủ sở hữu Bot (Owner ID) luôn có toàn quyền tuyệt đối ở mọi server (không cần bất kỳ Role hay quyền Admin nào)
+      // - Người dùng khác muốn chạy lệnh bắt buộc phải có quyền Administrator trên server
+      const isOwner = config.ownerId && interaction.user.id === config.ownerId;
+      const isAdmin = interaction.memberPermissions && interaction.memberPermissions.has(PermissionFlagsBits.Administrator);
+
+      if (!isOwner && !isAdmin) {
+        return interaction.reply({
+          content: 'Bạn không có quyền thực hiện lệnh này. Chỉ Chủ sở hữu Bot hoặc Quản trị viên mới được phép.',
+          ephemeral: true
+        });
+      }
+
       const command = commands.find(c => c.data.name === interaction.commandName);
       if (command) {
         await command.execute(interaction);

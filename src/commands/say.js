@@ -4,7 +4,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('say')
     .setDescription('Gửi tin nhắn văn bản qua bot')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('message')

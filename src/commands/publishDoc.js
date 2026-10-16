@@ -15,7 +15,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('publish-doc')
     .setDescription('Chia sẻ tài liệu kèm nút tải')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('title')

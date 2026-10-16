@@ -6,8 +6,7 @@ const { getAllAvailablePdfs } = require('../services/fileScanner');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('list-docs')
-    .setDescription('Xem danh sách tài liệu PDF có sẵn')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDescription('Xem danh sách tài liệu PDF có sẵn'),
 
   async execute(interaction) {
     const fileMap = getAllAvailablePdfs();

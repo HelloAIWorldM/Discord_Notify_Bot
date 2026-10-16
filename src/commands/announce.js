@@ -9,7 +9,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('announce')
     .setDescription('Gửi thông báo dạng Embed')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('title')

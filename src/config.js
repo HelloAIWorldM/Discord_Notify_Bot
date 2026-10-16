@@ -13,6 +13,9 @@ const config = {
   minJoinDays: parseInt(process.env.MIN_JOIN_DAYS || '1', 10),
   requiredRoleId: process.env.REQUIRED_ROLE_ID || '',
 
+  // ID Discord của Chủ sở hữu Bot (toàn quyền sử dụng mọi lệnh ở mọi server)
+  ownerId: process.env.OWNER_ID || '490681384684355604',
+
 
   // Cấu hình Chế độ ngủ (Sleep Mode: Ẩn khi không có ai dùng, tự bật Online khi có tương tác)
   sleepMode: process.env.SLEEP_MODE !== 'false', // Mặc định bật true
