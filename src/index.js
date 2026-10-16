@@ -254,8 +254,8 @@ client.on(Events.MessageCreate, async message => {
     // Hiển thị trạng thái đang nhập tin nhắn (typing indicator)
     await message.channel.sendTyping().catch(() => {});
 
-    // Lấy câu trả lời tự nhiên, lịch sự, không code, không kèm icon
-    const replyContent = await getAutoReply(userPrompt, message.author);
+    // Lấy câu trả lời tự nhiên, lịch sự, xưng hô theo tên, không code, không kèm icon
+    const replyContent = await getAutoReply(userPrompt, message.author, message.member);
 
     if (replyContent) {
       await message.reply({
