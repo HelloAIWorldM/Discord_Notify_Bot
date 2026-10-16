@@ -15,7 +15,7 @@ const config = {
 
   // Cấu hình AI phản hồi tự động khi bot được tag (Tùy chọn)
   geminiApiKey: process.env.GEMINI_API_KEY || '',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
 
   // Cấu hình Chế độ ngủ (Sleep Mode: Ẩn khi không có ai dùng, tự bật Online khi có tương tác)
   sleepMode: process.env.SLEEP_MODE !== 'false', // Mặc định bật true

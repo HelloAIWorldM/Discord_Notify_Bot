@@ -188,7 +188,7 @@ async function getAutoReply(userPrompt, author, member) {
 
   // Nếu có cấu hình Google Gemini API Key, sử dụng AI để trả lời tự nhiên theo ngữ cảnh
   if (config.geminiApiKey) {
-    const modelsToTry = [config.geminiModel, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter(Boolean);
+    const modelsToTry = [config.geminiModel, 'gemini-3.5-flash-lite', 'gemini-3.8-flash', 'gemini-3.1-flash-lite'].filter(Boolean);
     const uniqueModels = [...new Set(modelsToTry)];
 
     for (const modelName of uniqueModels) {
@@ -212,8 +212,7 @@ CÁC NGUYÊN TẮC BẮT BUỘC:
           contents: cleanPrompt,
           config: {
             systemInstruction: systemInstruction.trim(),
-            temperature: 0.7,
-            maxOutputTokens: 100
+            temperature: 0.7
           }
         });
 
