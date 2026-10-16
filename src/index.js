@@ -12,7 +12,6 @@ const { config, validateConfig } = require('./config');
 const { applyWatermark } = require('./services/watermark');
 const { logDownload } = require('./services/logger');
 const { getAllAvailablePdfs } = require('./services/fileScanner');
-const { getAutoReply } = require('./services/autoReply');
 
 // Các lệnh Slash Command
 const publishDocCmd = require('./commands/publishDoc');
@@ -22,18 +21,12 @@ const announceCmd = require('./commands/announce');
 
 const commands = [publishDocCmd, listDocsCmd, sayCmd, announceCmd];
 
-// Khởi tạo Client Discord với các Intent cần thiết:
-// - Guilds: Quản lý slash commands, tương tác nút bấm
-// - GuildMessages: Nhận diện tin nhắn trong kênh để tự động trả lời khi được nhắc đến (@Bot)
-const intents = [
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.GuildMessages
-];
-if (process.env.MESSAGE_CONTENT_INTENT === 'true') {
-  intents.push(GatewayIntentBits.MessageContent);
-}
-
-const client = new Client({ intents });
+// Khởi tạo Client Discord (GatewayIntentBits.Guilds đủ cho Slash Commands và Buttons)
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds
+  ]
+});
 
 // Đăng ký Slash Commands toàn cầu (Global Commands) duy nhất, xóa sạch lệnh trùng ở cấp Guild
 async function registerCommands() {
@@ -262,54 +255,7 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-// Xử lý sự kiện tự động trả lời khi có người nhắc đến Bot (@Bot hoặc Reply tin nhắn của Bot)
-client.on(Events.MessageCreate, async message => {
-  try {
-    // Bỏ qua tin nhắn từ Bot (bao gồm chính bot này)
-    if (message.author.bot) return;
 
-    // Kiểm tra xem bot có được tag/nhắc tên trực tiếp trong tin nhắn không
-    const isDirectlyMentioned = client.user && message.mentions.users.has(client.user.id);
-
-    // Kiểm tra xem người dùng có đang trả lời (reply) tin nhắn của bot không
-    let isReplyToBot = false;
-    if (message.reference && message.reference.messageId && client.user) {
-      const referencedMsg = await message.channel.messages.fetch(message.reference.messageId).catch(() => null);
-      if (referencedMsg && referencedMsg.author.id === client.user.id) {
-        isReplyToBot = true;
-      }
-    }
-
-    // Nếu không phải nhắc đến bot và cũng không phải reply bot thì bỏ qua
-    if (!isDirectlyMentioned && !isReplyToBot) return;
-
-    // Đánh thức bot dậy chuyển sang Online khi được nhắc tên
-    wakeUpBot();
-
-    // Tách bỏ tag @Bot khỏi nội dung câu hỏi
-    let userPrompt = message.content;
-    if (client.user) {
-      const botMentionRegex = new RegExp(`<@!?${client.user.id}>`, 'g');
-      userPrompt = userPrompt.replace(botMentionRegex, '');
-    }
-    userPrompt = userPrompt.trim();
-
-    // Hiển thị trạng thái đang nhập tin nhắn (typing indicator)
-    await message.channel.sendTyping().catch(() => {});
-
-    // Lấy câu trả lời tự nhiên, lịch sự, xưng hô theo tên, không code, không kèm icon
-    const replyContent = await getAutoReply(userPrompt, message.author, message.member);
-
-    if (replyContent) {
-      await message.reply({
-        content: replyContent,
-        allowedMentions: { repliedUser: true }
-      });
-    }
-  } catch (err) {
-    console.error('[AUTO REPLY ERROR]', err.message);
-  }
-});
 
 // Xử lý lỗi ngoại lệ không để bot sập đột ngột
 process.on('unhandledRejection', error => {

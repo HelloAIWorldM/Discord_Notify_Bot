@@ -13,9 +13,6 @@ const config = {
   minJoinDays: parseInt(process.env.MIN_JOIN_DAYS || '1', 10),
   requiredRoleId: process.env.REQUIRED_ROLE_ID || '',
 
-  // Cấu hình AI phản hồi tự động khi bot được tag (Tùy chọn)
-  geminiApiKey: process.env.GEMINI_API_KEY || '',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
 
   // Cấu hình Chế độ ngủ (Sleep Mode: Ẩn khi không có ai dùng, tự bật Online khi có tương tác)
   sleepMode: process.env.SLEEP_MODE !== 'false', // Mặc định bật true
