@@ -8,31 +8,31 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('announce')
-    .setDescription('Điều khiển Bot gửi thông báo dạng Embed trang trọng (Chỉ Admin)')
+    .setDescription('Gửi thông báo dạng Embed')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('title')
-        .setDescription('Tiêu đề của thông báo')
+        .setDescription('Tiêu đề thông báo')
         .setRequired(true)
     )
     .addStringOption(option =>
       option
         .setName('message')
-        .setDescription('Nội dung chi tiết thông báo')
+        .setDescription('Nội dung thông báo')
         .setRequired(true)
     )
     .addChannelOption(option =>
       option
         .setName('channel')
-        .setDescription('Kênh nhận thông báo (mặc định là kênh hiện tại)')
+        .setDescription('Kênh nhận thông báo (mặc định: kênh hiện tại)')
         .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
         .setRequired(false)
     )
     .addStringOption(option =>
       option
         .setName('color')
-        .setDescription('Màu sắc của khung thông báo')
+        .setDescription('Màu sắc khung thông báo')
         .addChoices(
           { name: 'Xanh dương (Mặc định)', value: 'BLUE' },
           { name: 'Xanh lá cây (An toàn / Thành công)', value: 'GREEN' },

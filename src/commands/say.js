@@ -3,18 +3,18 @@ const { SlashCommandBuilder, PermissionFlagsBits, ChannelType } = require('disco
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('say')
-    .setDescription('Điều khiển Bot gửi tin nhắn văn bản thay mặt bạn (Chỉ Admin)')
+    .setDescription('Gửi tin nhắn văn bản qua bot')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('message')
-        .setDescription('Nội dung tin nhắn bạn muốn Bot gửi')
+        .setDescription('Nội dung tin nhắn muốn gửi')
         .setRequired(true)
     )
     .addChannelOption(option =>
       option
         .setName('channel')
-        .setDescription('Kênh nhận tin nhắn (mặc định là kênh hiện tại)')
+        .setDescription('Kênh nhận tin nhắn (mặc định: kênh hiện tại)')
         .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
         .setRequired(false)
     ),

@@ -14,24 +14,24 @@ const { resolveAndStorePdf } = require('../services/fileScanner');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('publish-doc')
-    .setDescription('Đăng tải bài viết chia sẻ tài liệu kèm nút tải cá nhân hóa (Chỉ Admin)')
+    .setDescription('Chia sẻ tài liệu kèm nút tải')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option
         .setName('title')
-        .setDescription('Tiêu đề tài liệu hiển thị cho thành viên')
+        .setDescription('Tiêu đề tài liệu')
         .setRequired(true)
     )
     .addAttachmentOption(option =>
       option
         .setName('file_upload')
-        .setDescription('Kéo thả / Đính kèm file PDF trực tiếp (dành cho người ở máy tính khác hoặc điện thoại)')
+        .setDescription('Kéo thả hoặc đính kèm file PDF')
         .setRequired(false)
     )
     .addStringOption(option =>
       option
         .setName('file_name')
-        .setDescription('Hoặc chọn file PDF có sẵn trên máy (tự quét Desktop, Downloads và kho lưu trữ)')
+        .setDescription('Chọn file PDF có sẵn trên máy')
         .setRequired(false)
         .setAutocomplete(true)
     )
@@ -44,13 +44,13 @@ module.exports = {
     .addRoleOption(option =>
       option
         .setName('required_role')
-        .setDescription('Chỉ định Role bắt buộc mới được phép tải tài liệu này (Tùy chọn)')
+        .setDescription('Vai trò được phép tải tài liệu')
         .setRequired(false)
     )
     .addChannelOption(option =>
       option
         .setName('log_channel')
-        .setDescription('Chọn kênh nhận thông báo log khi có người tải (Mặc định: kênh trong .env)')
+        .setDescription('Kênh nhận thông báo khi có người tải')
         .setRequired(false)
     ),
 

@@ -13,6 +13,10 @@ const config = {
   minJoinDays: parseInt(process.env.MIN_JOIN_DAYS || '1', 10),
   requiredRoleId: process.env.REQUIRED_ROLE_ID || '',
 
+  // Cấu hình AI phản hồi tự động khi bot được tag (Tùy chọn)
+  geminiApiKey: process.env.GEMINI_API_KEY || '',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+
   // Đường dẫn thư mục lưu trữ
   paths: {
     rawDocs: path.join(__dirname, '../storage/raw_docs'),
